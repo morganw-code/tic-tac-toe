@@ -1,11 +1,15 @@
+body {
+  box-sizing: border-box;
+}
+
 .board {
-  height: 500px;
-  width: 500px;
+  height: 512px;
+  width: 512px;
   display: grid;
   grid-template-areas: "s1 s2 s3"
                        "s4 s5 s6"
                        "s7 s8 s9";
-  grid-gap: 0;
+  grid-gap: 6px;
 }
 
 .square {
@@ -17,3 +21,4 @@
 .square:nth-child(even) {
   background-color: blue;
 }
+
