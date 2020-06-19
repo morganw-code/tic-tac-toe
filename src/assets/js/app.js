@@ -1,4 +1,4 @@
-class App {
+class Game {
   constructor(names) {
     this.names = names;
     this.clicks = 0;
@@ -35,7 +35,7 @@ class App {
       this.squares.forEach((obj) => {
         if (click.target === obj.square) {
           obj.xClicked = this.isXTurn;
-          obj.square.appendChild(document.createTextNode(this.isXTurn));
+          obj.square.innerText = this.isXTurn;
           console.log(obj.xClicked);
         }
       });
@@ -93,17 +93,26 @@ class App {
   }
 }
 
-function start() {
-  new App([nameField1.value, nameField2.value]);
-}
-
-const inputContainer = document.createElement("div");
+const start = () => {
+  new Game([nameField1.value, nameField2.value]);
+};
+const inputsContainer = document.querySelector("#inputs-container");
 const startButton = document.createElement("button");
-startButton.innerHTML = "Start";
 const nameField1 = document.createElement("input");
 const nameField2 = document.createElement("input");
-inputContainer.appendChild(nameField1);
-inputContainer.appendChild(nameField2);
-inputContainer.appendChild(startButton);
+const p1 = document.createElement("p");
+const p2 = document.createElement("p");
+startButton.innerHTML = "Start";
+p1.innerHTML = "X";
+p1.style.display = "inline-block";
+p2.innerHTML = "O";
+p2.style.display = "inline-block";
+inputsContainer.appendChild(p1);
+inputsContainer.appendChild(p2);
+inputsContainer.appendChild(nameField1);
+inputsContainer.appendChild(nameField2);
+inputsContainer.appendChild(startButton);
+nameField1.id = "name-field1";
+nameField2.id = "name-field2";
+startButton.id = "start-button";
 startButton.addEventListener("click", start);
-document.querySelector("body").appendChild(inputContainer);
