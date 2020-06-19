@@ -2,7 +2,7 @@ class App {
   constructor(names) {
     this.names = names;
     this.clicks = 0;
-    this.turn = names[0];
+    this.isXTurn = false;
     this.running = true;
     this.status = document.createElement("h1");
     this.status.innerHTML = "RUNNING";
@@ -13,7 +13,7 @@ class App {
       (node) => {
         const obj = {
           square: node,
-          clicker: null,
+          xClicked: null,
         };
 
         return obj;
@@ -34,9 +34,9 @@ class App {
       // set square clicker
       this.squares.forEach((obj) => {
         if (click.target === obj.square) {
-          obj.clicker = this.turn;
-          obj.square.appendChild(document.createTextNode(this.turn));
-          console.log(obj.clicker);
+          obj.xClicked = this.isXTurn;
+          obj.square.appendChild(document.createTextNode(this.isXTurn));
+          console.log(obj.xClicked);
         }
       });
 
@@ -45,7 +45,7 @@ class App {
       }
 
       // switch turns
-      this.turn = this.turn === this.names[0] ? this.names[1] : this.names[0];
+      this.isXTurn = !this.isXTurn;
     }
   }
 
@@ -68,7 +68,7 @@ class App {
       winningCombos.forEach((combo) => {
         if (
           combo.every((square) => {
-            return this.squares[square].clicker === this.turn;
+            return this.squares[square].xClicked === this.isXTurn;
           })
         ) {
           // color winning squares
@@ -76,13 +76,13 @@ class App {
             this.squares[square].square.style.backgroundColor = "green";
           });
           this.status.innerHTML = `GAME OVER - ${
-            this.squares[combo[0]].clicker
+            this.squares[combo[0]].xClicked
           } WON!`;
           this.running = false;
         } else if (
           // check if all squares have been played after determining no winner
           this.squares.every((square) => {
-            return square.clicker !== null;
+            return square.xClicked !== null;
           })
         ) {
           this.status.innerHTML = "GAME OVER - TIE";
