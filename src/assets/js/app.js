@@ -64,12 +64,17 @@ class App {
         [2, 4, 6],
       ];
 
+      // checks all combinations for a winner
       winningCombos.forEach((combo) => {
         if (
           combo.every((square) => {
             return this.squares[square].clicker === this.turn;
           })
         ) {
+          // color winning squares
+          combo.forEach((square) => {
+            this.squares[square].square.style.backgroundColor = "green";
+          });
           this.status.innerHTML = `GAME OVER - ${
             this.squares[combo[0]].clicker
           } WON!`;
@@ -85,12 +90,6 @@ class App {
         }
       });
     }
-  }
-
-  printWinner(clicker) {
-    console.log(`${clicker} won!`);
-    this.running = false;
-    this.status.innerHTML = `GAME OVER - ${clicker} won!`;
   }
 }
 
