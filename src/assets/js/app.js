@@ -8,7 +8,7 @@ class App {
     this.status.innerHTML = "RUNNING";
     document.querySelector("body").prepend(this.status);
 
-    // construct object with square node and it's status
+    // construct array of objects with square node and it's status
     this.squares = Array.from(document.querySelectorAll(".square")).map(
       (node) => {
         const obj = {
@@ -19,7 +19,7 @@ class App {
         return obj;
       }
     );
-  
+
     this.squares.forEach((obj) => {
       obj.square.addEventListener("click", this.handleClick.bind(this), {
         once: true,
@@ -30,7 +30,7 @@ class App {
   handleClick(click) {
     if (this.running) {
       this.clicks++;
-      
+
       // set square clicker
       this.squares.forEach((obj) => {
         if (click.target === obj.square) {
@@ -50,87 +50,41 @@ class App {
   }
 
   checkWin() {
-    if (
-      this.checkMatch(
-        this.squares[0].clicker,
-        this.squares[1].clicker,
-        this.squares[2].clicker
-      )
-    ) {
-      this.printWinner(this.squares[0].clicker);
-    } else if (
-      this.checkMatch(
-        this.squares[3].clicker,
-        this.squares[4].clicker,
-        this.squares[5].clicker
-      )
-    ) {
-      this.printWinner(this.squares[3].clicker);
-    } else if (
-      this.checkMatch(
-        this.squares[6].clicker,
-        this.squares[7].clicker,
-        this.squares[8].clicker
-      )
-    ) {
-      this.printWinner(this.squares[6].clicker);
-    } else if (
-      this.checkMatch(
-        this.squares[0].clicker,
-        this.squares[3].clicker,
-        this.squares[6].clicker
-      )
-    ) {
-      this.printWinner(this.squares[0].clicker);
-    } else if (
-      this.checkMatch(
-        this.squares[1].clicker,
-        this.squares[4].clicker,
-        this.squares[7].clicker
-      )
-    ) {
-      this.printWinner(this.squares[1].clicker);
-    } else if (
-      this.checkMatch(
-        this.squares[2].clicker,
-        this.squares[4].clicker,
-        this.squares[6].clicker
-      )
-    ) {
-      this.printWinner(this.squares[2].clicker);
-    } else if (
-      this.checkMatch(
-        this.squares[0].clicker,
-        this.squares[4].clicker,
-        this.squares[8].clicker
-      )
-    ) {
-      this.printWinner(this.squares[0].clicker);
-    } else if (
-      this.checkMatch(
-        this.squares[2].clicker,
-        this.squares[4].clicker,
-        this.squares[6].clicker
-      )
-    ) {
-      this.printWinner(this.squares[2].clicker);
-    } else if (
-      // check if all squares have been clicked after no winner
-      this.squares.every((square) => {
-        return square.clicker !== null;
-      })
-    ) {
-      this.status.innerHTML = "GAME OVER - TIE";
-      this.running = false;
+    if (this.running) {
+      const winningCombos = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 4, 6],
+
+        [0, 4, 8],
+        [2, 4, 6],
+      ];
+
+      winningCombos.forEach((combo) => {
+        if (
+          combo.every((square) => {
+            return this.squares[square].clicker === this.turn;
+          })
+        ) {
+          this.status.innerHTML = `GAME OVER - ${
+            this.squares[combo[0]].clicker
+          } WON!`;
+          this.running = false;
+        } else if (
+          // check if all squares have been played after determining no winner
+          this.squares.every((square) => {
+            return square.clicker !== null;
+          })
+        ) {
+          this.status.innerHTML = "GAME OVER - TIE";
+          this.running = false;
+        }
+      });
     }
-  }
-  
-  // check if nodes have same clicker
-  checkMatch(x, y, z) {
-    if (x === null || y === null || z === null) {
-      return false;
-    }
-    return x === y && x === z;
   }
 
   printWinner(clicker) {
