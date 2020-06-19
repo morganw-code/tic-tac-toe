@@ -2,11 +2,12 @@ class Game {
   constructor(names) {
     this.names = names;
     this.clicks = 0;
-    this.isXTurn = false;
+    this.isXTurn = true;
     this.running = true;
-    this.status = document.createElement("h1");
+    this.statusBar = document.querySelector("#status-bar");
+    this.status = document.createElement("p");
     this.status.innerHTML = "RUNNING";
-    document.querySelector("body").prepend(this.status);
+    this.statusBar.appendChild(this.status);
 
     // construct array of objects with square node and it's status
     this.squares = Array.from(document.querySelectorAll(".square")).map(
@@ -35,7 +36,7 @@ class Game {
       this.squares.forEach((obj) => {
         if (click.target === obj.square) {
           obj.xClicked = this.isXTurn;
-          obj.square.innerText = this.isXTurn;
+          obj.square.innerText = this.isXTurn ? "X" : "O";
           console.log(obj.xClicked);
         }
       });
@@ -76,7 +77,7 @@ class Game {
             this.squares[square].square.style.backgroundColor = "green";
           });
           this.status.innerHTML = `GAME OVER - ${
-            this.squares[combo[0]].xClicked
+            this.squares[combo[0]].xClicked ? this.names[0] : this.names[1]
           } WON!`;
           this.running = false;
         } else if (
@@ -94,8 +95,13 @@ class Game {
 }
 
 const start = () => {
-  new Game([nameField1.value, nameField2.value]);
+  if (nameField1.value && nameField2.value) {
+    new Game([nameField1.value, nameField2.value]);
+  } else {
+    alert("please enter both player names!");
+  }
 };
+
 const inputsContainer = document.querySelector("#inputs-container");
 const startButton = document.createElement("button");
 const nameField1 = document.createElement("input");
@@ -113,6 +119,8 @@ inputsContainer.appendChild(nameField1);
 inputsContainer.appendChild(nameField2);
 inputsContainer.appendChild(startButton);
 nameField1.id = "name-field1";
+nameField1.placeholder = "player1";
 nameField2.id = "name-field2";
+nameField2.placeholder = "player2";
 startButton.id = "start-button";
 startButton.addEventListener("click", start);
