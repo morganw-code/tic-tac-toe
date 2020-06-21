@@ -51,46 +51,44 @@ class Game {
   }
 
   checkWin() {
-    if (this.running) {
-      const winningCombos = [
-        [0, 1, 2],
-        [3, 4, 5],
-        [6, 7, 8],
+    const winningCombos = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
 
-        [0, 3, 6],
-        [1, 4, 7],
-        [2, 4, 6],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
 
-        [0, 4, 8],
-        [2, 4, 6],
-      ];
+      [0, 4, 8],
+      [2, 4, 6],
+    ];
 
-      // checks all combinations for a winner
-      winningCombos.forEach((combo) => {
-        if (
-          combo.every((square) => {
-            return this.squares[square].xClicked === this.isXTurn;
-          })
-        ) {
-          // color winning squares
-          combo.forEach((square) => {
-            this.squares[square].square.style.backgroundColor = "green";
-          });
-          this.status.innerHTML = `GAME OVER - ${
-            this.squares[combo[0]].xClicked ? this.names[0] : this.names[1]
-          } WON!`;
-          this.running = false;
-        } else if (
-          // check if all squares have been played after determining no winner
-          this.squares.every((square) => {
-            return square.xClicked !== null;
-          })
-        ) {
-          this.status.innerHTML = "GAME OVER - TIE";
-          this.running = false;
-        }
-      });
-    }
+    // checks all combinations for a winner
+    winningCombos.forEach((combo) => {
+      if (
+        combo.every((square) => {
+          return this.squares[square].xClicked === this.isXTurn;
+        })
+      ) {
+        // color winning squares
+        combo.forEach((square) => {
+          this.squares[square].square.style.backgroundColor = "green";
+        });
+        this.status.innerHTML = `GAME OVER - ${
+          this.squares[combo[0]].xClicked ? this.names[0] : this.names[1]
+        } WON!`;
+        this.running = false;
+      } else if (
+        // check if all squares have been played after determining no winner
+        this.squares.every((square) => {
+          return square.xClicked !== null;
+        })
+      ) {
+        this.status.innerHTML = "GAME OVER - TIE";
+        this.running = false;
+      }
+    });
   }
 }
 

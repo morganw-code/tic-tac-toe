@@ -47,7 +47,7 @@ body {
 
 #start-button {
   grid-row: 3;
-  grid-column: 1 / span 4;
+  grid-column: 1 / span 3;
 }
 
 #name-field1 {
